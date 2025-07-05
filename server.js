@@ -501,8 +501,7 @@ app.post('/login', (req, res) => {
         }
 
         if (result.rows.length > 0) {
-            const user = result.rows[0];
-            return res.json({ message: 'Inicio de sesión exitoso', user });
+            return res.json({ message: 'Inicio de sesión exitoso', user: result.rows[0] });
         } else {
             return res.status(401).json({ error: 'Credenciales inválidas' });
         }
