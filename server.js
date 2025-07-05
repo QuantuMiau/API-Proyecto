@@ -474,6 +474,65 @@ app.get('/services/name/:serviceName', (req, res) => {
     });
 });
 
+
+app.post('/register', (req, res) => {
+    const { nombre, password, email } = req.body;
+    const query = 'INSERT INTO usuarios (nombre, email, password) VALUES ($1, $2, $3) RETURNING *';
+    client.query(query, [nombre, password, email], (err, result) => {
+        if (err) {
+            console.error('Error al registrar el usuario:', err);
+            return res.status(500).json({ error: 'Error al registrar el usuario' });
+        }
+        const newUser = result.rows[0];
+        return res.status(201).json({ message: 'Usuario registrado exitosamente', user: newUser });
+    });
+});
+
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+
+    
+    const query = 'SELECT * FROM usuarios WHERE email = $1 AND password = $2';
+    
+    client.query(query, [email, password], (err, result) => {
+        if (err) {
+            console.error('Error al realizar la consulta:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+
+        if (result.rows.length > 0) {
+            const user = result.rows[0];
+            return res.json({ message: 'Inicio de sesión exitoso', user });
+        } else {
+            return res.status(401).json({ error: 'Credenciales inválidas' });
+        }
+    });
+});
+
+app.get('/users', (req, res) => {
+    client.query('SELECT * FROM usuarios', (err, result) => {
+        if (err) {
+            console.error('Error al obtener los usuarios:', err);
+            return res.status(500).json({ error: 'Error al obtener los usuarios' });
+        }
+        res.json(result.rows);
+    });
+});
+
+app.get('/users/:id', (req, res) => {
+    const userId = req.params.id;
+    client.query('SELECT * FROM usuarios WHERE id = $1', [userId], (err, result) => {
+        if (err) {
+            console.error('Error al obtener el usuario:', err);
+            return res.status(500).json({ error: 'Error al obtener el usuario' });
+        }
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+        res.json(result.rows[0]);
+    });
+});    
+
 // inicar servidor // start server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
