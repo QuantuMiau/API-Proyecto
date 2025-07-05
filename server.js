@@ -478,7 +478,7 @@ app.get('/services/name/:serviceName', (req, res) => {
 app.post('/register', (req, res) => {
     const { nombre, password, email } = req.body;
     const query = 'INSERT INTO usuarios (nombre, email, password) VALUES ($1, $2, $3) RETURNING *';
-    client.query(query, [nombre, password, email], (err, result) => {
+    client.query(query, [nombre, email, password], (err, result) => {
         if (err) {
             console.error('Error al registrar el usuario:', err);
             return res.status(500).json({ error: 'Error al registrar el usuario' });
