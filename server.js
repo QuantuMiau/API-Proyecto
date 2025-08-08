@@ -71,7 +71,7 @@ app.post('/register', (req, res) => {
   client.query(sql, [nombre, apellido_pate, apellidoMateFinal, telefono, email, pass], (err, result) => {
     if (err) {
       console.error('Error al registrar cliente:', err);
-      return res.status(500).json({ mensaje: 'Error interno al registrar cliente' });
+      return res.status(500).json({ mensaje: err.message});
     }
 
     res.status(201).json({ mensaje: 'Cliente registrado correctamente' });
