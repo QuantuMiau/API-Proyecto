@@ -64,9 +64,11 @@ app.post('/login', (req, res) => {
 app.post('/register', (req, res) => {
   const { nombre, apellido_pate, apellido_mate, telefono, email, pass } = req.body;
 
+
+  const apellidoMateFinal = apellido_mate || '';
   const sql = `CALL sp_registrar_cliente($1, $2, $3, $4, $5, $6)`;
 
-  client.query(sql, [nombre, apellido_pate, apellido_mate, telefono, email, pass], (err, result) => {
+  client.query(sql, [nombre, apellido_pate, apellidoMateFinal, telefono, email, pass], (err, result) => {
     if (err) {
       console.error('Error al registrar cliente:', err);
       return res.status(500).json({ mensaje: 'Error interno al registrar cliente' });
