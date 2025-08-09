@@ -226,7 +226,7 @@ app.get('/paciente/:id', (req, res) => {
       return res.status(500).json({ mensaje: 'Error interno al obtener paciente' });
     }
 
-    res.status(200).json(result.rows);
+    res.status(200).json(result.rows[0]);
   });
 });
 
