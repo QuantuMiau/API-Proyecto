@@ -199,6 +199,23 @@ app.get('/clientes/:id_cliente/mascotas', (req, res) => {
   });
 });
 
+// obtener mascota con por id con visitas
+app.get('/pacientes/:id', (req, res) => {
+  const { id } = req.params;
+
+  const sql = `SELECT * FROM vw_paciente_con_visitas WHERE id_paciente = $1`;
+
+  client.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error('Error al obtener paciente:', err);
+      return res.status(500).json({ mensaje: 'Error interno al obtener paciente' });
+    }
+
+    res.status(200).json(result.rows);
+  });
+});
+
+
 
 // visitas
 app.post('/visitas', (req, res) => {
