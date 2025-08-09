@@ -116,6 +116,26 @@ app.post('/pacientes', (req, res) => {
   });
 });
 
+app.get('/clientes/:id', (req, res) => {
+  const id_cliente = parseInt(req.params.id);
+
+  const sql = `SELECT * FROM vw_clientes_sin_status WHERE id_cliente = $1`;
+
+  client.query(sql, [id_cliente], (err, result) => {
+    if (err) {
+      console.error('Error al obtener cliente:', err);
+      return res.status(500).json({ mensaje: 'Error interno al obtener cliente' });
+    }
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ mensaje: 'Cliente no encontrado' });
+    }
+
+    res.status(200).json(result.rows[0]);
+  });
+});
+
+
 
 // Macotas // 
 app.post('/pacientes', (req, res) => {
