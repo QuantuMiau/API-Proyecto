@@ -149,13 +149,12 @@ app.put('/pacientes/:id', (req, res) => {
     nombre_paciente,
     raza,
     sexo,
-    fecha_nacimiento,
-    estatus
+    fecha_nacimiento
   } = req.body;
 
-  const sql = `CALL sp_actualizar_paciente($1, $2, $3, $4, $5, $6, $7, $8)`;
+  const sql = `CALL sp_actualizar_paciente($1, $2, $3, $4, $5, $6, $7)`;
 
-  client.query(sql, [id_paciente, id_cliente, especie, nombre_paciente, raza, sexo, fecha_nacimiento, estatus], (err, result) => {
+  client.query(sql, [id_paciente, id_cliente, especie, nombre_paciente, raza, sexo, fecha_nacimiento], (err, result) => {
     if (err) {
       console.error('Error al actualizar paciente:', err);
       return res.status(500).json({ mensaje: 'Error interno al actualizar paciente' });
