@@ -215,6 +215,23 @@ app.get('/pacientes/:id', (req, res) => {
   });
 });
 
+app.get('/paciente/:id', (req, res) => {
+  const { id } = req.params;
+
+  const sql = `SELECT * FROM pacientes WHERE id_paciente = $1`;
+
+  client.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error('Error al obtener paciente:', err);
+      return res.status(500).json({ mensaje: 'Error interno al obtener paciente' });
+    }
+
+    res.status(200).json(result.rows);
+  });
+});
+
+
+
 
 
 // visitas
