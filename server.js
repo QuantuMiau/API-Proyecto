@@ -218,7 +218,7 @@ app.get('/pacientes/:id', (req, res) => {
 app.get('/paciente/:id', (req, res) => {
   const { id } = req.params;
 
-  const sql = `SELECT * FROM pacientes WHERE id_paciente = $1`;
+  const sql = `SELECT * FROM vw_paciente_detalle  WHERE id_paciente = $1`;
 
   client.query(sql, [id], (err, result) => {
     if (err) {
